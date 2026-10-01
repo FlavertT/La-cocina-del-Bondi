@@ -1,0 +1,957 @@
+[
+  {
+    "name": "Aceite x 900 ml",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aceite de Oliva x 1L",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "arroz 500 grs",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Arroz Integral x 500gs",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Arroz Yamani x500gr",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Arvejas x24",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Atún Lomito x48",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Azucar x 10k",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Caldo carne x12",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Caldo verdura x12",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Choclo cremoso x300gr  x24L",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Choclo en granos x300gr x24L",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Fideos don Vicente x500 x 20P",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Fideos tirabuzon x 500 x 15P",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Grasa x kg",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Harina 000",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Harina 0000",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Jugo de Limon x 250cc",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Mayonesa x 1k",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Pan rallado x25kg",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Polenta x 1k",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Sal fina x25kg",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Sal gruesa x25kg",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Salsa de soja x 500",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Tomate en lata x 8L",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Tomate sachet x 2Lt",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vinagre x 1L",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vino Blanco x6",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vino tinto x6",
+    "category": "Comida",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aceite individual",
+    "category": "Individuales",
+    "unit": "unidad"
+  },
+  {
+    "name": "Mayonesitas",
+    "category": "Individuales",
+    "unit": "unidad"
+  },
+  {
+    "name": "Quesitos",
+    "category": "Individuales",
+    "unit": "unidad"
+  },
+  {
+    "name": "Sal individual",
+    "category": "Individuales",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vinagre individual",
+    "category": "Individuales",
+    "unit": "unidad"
+  },
+  {
+    "name": "Calabaza",
+    "category": "Verduleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cebolla",
+    "category": "Verduleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Papa",
+    "category": "Verduleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Zanahoria chica",
+    "category": "Verduleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Zanahoria grande",
+    "category": "Verduleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aceritos",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Alcohol x 500",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Blem",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa residuo bulto x 20",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Curitas en cajita",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Escobillon",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Esponjas",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Guantes nitrilo x uni T.M",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Jabon Blanco x2",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Magistral x 500",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Palo de escoba",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Paños amarillos x3",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Rejilla Blanca linea color",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Rollo de papel x2",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "Trapo de piso",
+    "category": "Limpieza",
+    "unit": "unidad"
+  },
+  {
+    "name": "102 chiquita (frio) x400",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "105 p/torre (frio) x400",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "143 azul (caliente)",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "143 verde ( frio)",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "445 verde base",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "445 verde tapa",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "145 PP azul",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bandejitas Bondi x 1000",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa Camiseta 20x30 x bulto(20)",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa Camiseta 30x40 x bulto(20)",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa Camiseta 40x50 x bulto(20)",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa Camiseta 50x60 x bulto(20)",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa celofan x100",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa de arranque 15x20",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsa de arranque 20x30",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bolsas Freezer 20x30 x 2000",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Caja de servilletas bondi x 1000",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Caja de toalla de papel",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cajas 1/2 pizza",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cajas 2 Empanadas",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cajas 4 Empanadas",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cubierto Cuchara Sopera",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cubierto Cuchara postre",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cubierto Cuchillos",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "CubiertoTenedor",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Film 38x1000",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Folex x1k",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Marmitas base",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Marmitas tapa",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Rollos térmicos x10",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vasito de aderezo 50cc x1300",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vasito de postre evento 110cc x1300",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "vaso postre 1/4 x 1000",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "tapa postre 1/4 x 1000",
+    "category": "Descartables",
+    "unit": "unidad"
+  },
+  {
+    "name": "magistral x 300ml",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "azucar x kg",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "choclo amarillo x 360g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "duraznos en lata x unidad",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "detergente ala x 450ml",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "mayonesa Danica x 1kg",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "choclo cremoso lata x 850g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "polenta x 730g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "fideos tirabuzón integral x 500g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "fideos tirabuzón tricolor x 500g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "arroz blanco x 1kg",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "143 caliente",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "atun lomito x 170g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "sal fina x 500g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "tapa postre",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "base postre",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "aceite cañuelas x 900ml",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "calditos verdura x 12",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "calditos carne x 12",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "grasa x 500g",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "bolsas residuo x 10",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "aceritos",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "alcohol",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "esponjas verdes",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vinagre x 960ml",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "trapo de piso",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "trapo amarillo",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "folex x unidad",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "arroz integral x kg",
+    "category": "stock arriba de la cámara",
+    "unit": "unidad"
+  },
+  {
+    "name": "Azucar impalpable x 1k",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cacao amargo",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Choco blanco x 1k",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Choco negro x 1k",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Coco x 1k",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Dulce de Leche x 10k",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Durazno en lata x 12",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Fécula de maíz x 1k",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Galletitas horoscopo x 240",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Gelatina Ananá",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Gelatina Cereza",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Gelatina Durazno",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Gelatina Frambuesa",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Gelatina Frutilla",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Gelatina Naranja",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Miel",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Mousse Chocolate",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Mousse Dulce de leche",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Postre Chocolate",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Postre dulce de leche",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Postre Vainilla",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Vainillas x 296gr (24u)",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "polvo de hornear",
+    "category": "Pasteleria",
+    "unit": "unidad"
+  },
+  {
+    "name": "Ajì molido x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Ajo en polvo x 500",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Avena x 5k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cebolla desh x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cereales x 2.5K",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Fécula de mandioca x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "condimento para arroz x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Harina de garbanzo x 5k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Lentejas x 25k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Lentejas x 1kg",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Maiz partido x 5k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Mostaza en grano x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Nuez Moscada x 500",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Oregano x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Pimentón rojo x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Pimienta blanca x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Pimienta en grano x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Porotos ensalada x 5k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Porotos Pallares locro x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Provenzal x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Romero x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Salvado de avena x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Salvado de trigo x 2k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Semillas MIX x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Semolin x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Sesamo x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Tomillo x 1k",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "punta bife p/picar",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Pan Burger 19/8",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Bananas 14/9",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Baguetitas",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "bollitos 25/9",
+    "category": "Condimentos",
+    "unit": "unidad"
+  },
+  {
+    "name": "Agua x12",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aquarius manzana x8",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aquarius naranja x8",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aquarius pera x8",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Aquarius pomelo x8",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Coca cola x12",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Coca ZERO x12",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Fanta x12",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Schweppes x12",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Sprite x12",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Juguitos baggio x18",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Juguitos cepita x24 multi",
+    "category": "Bebidas",
+    "unit": "unidad"
+  },
+  {
+    "name": "Cinta de Papel",
+    "category": "OTROS",
+    "unit": "unidad"
+  },
+  {
+    "name": "Curitas en cajita",
+    "category": "OTROS",
+    "unit": "unidad"
+  },
+  {
+    "name": "Fibrón",
+    "category": "OTROS",
+    "unit": "unidad"
+  },
+  {
+    "name": "Mate cocido x100",
+    "category": "OTROS",
+    "unit": "unidad"
+  },
+  {
+    "name": "Palitos de brochette x 30",
+    "category": "OTROS",
+    "unit": "unidad"
+  },
+  {
+    "name": "Te x 100",
+    "category": "OTROS",
+    "unit": "unidad"
+  },
+  {
+    "name": "Yerba x 500",
+    "category": "OTROS",
+    "unit": "unidad"
+  }
+]
