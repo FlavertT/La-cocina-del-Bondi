@@ -3,6 +3,7 @@ import {db,rows,record,dateToday} from '@/lib/store';
 import catalog from '@/lib/catalog.json';
 import { z } from 'zod';
 import {stockQuantity,consumption} from '@/lib/recipes';
+import {alertStatement,completeAlerts,sendAlert} from '@/lib/stock-alerts';
 export const dynamic='force-dynamic';
 const roleNames=['admin','cocina','bachero','caja','delivery'] as const;
 const text=z.string().trim().min(1).max(200);
@@ -31,8 +32,10 @@ export async function GET(req:NextRequest){try{
  const allowedProducts=new Set(all.filter(r=>r.kind==='product'&&productAccess(user,r.data)).map(r=>r.id));
  const visible=all.filter(r=>['admin','caja'].includes(user.role)||(r.kind==='recipe'&&user.role==='cocina'&&r.data.type==='plato')||(['order','company'].includes(r.kind)&&user.role!=='bachero')||(r.kind==='product'&&allowedProducts.has(r.id))||(['purchase','movement'].includes(r.kind)&&allowedProducts.has(r.data.productId))||(r.kind==='supplier'&&user.role!=='delivery'));
  const preparations= ['admin','caja','cocina'].includes(user.role)?(await db().prepare('SELECT * FROM preparations ORDER BY order_id DESC').all()).results.map((r:any)=>({...r,data:JSON.parse(r.data)})):[];
+ const productions=['admin','caja','cocina'].includes(user.role)?(await db().prepare('SELECT * FROM productions ORDER BY created DESC').all()).results.map((r:any)=>({...r,data:JSON.parse(r.data)})):[];
+ const alerts=(await db().prepare('SELECT * FROM stock_alerts ORDER BY id DESC LIMIT 100').all()).results.filter((r:any)=>allowedProducts.has(r.product_id)).map((r:any)=>({...r,data:JSON.parse(r.data)}));
  const members=user.role==='admin'?(await db().prepare('SELECT * FROM members ORDER BY owner DESC,name').all()).results:[];
- return NextResponse.json({user,records:visible,members,preparations,today:dateToday()},{headers:{'Cache-Control':'no-store'}});
+ return NextResponse.json({user,records:visible,members,preparations,productions,alerts,today:dateToday()},{headers:{'Cache-Control':'no-store'}});
  }catch(e:any){return fail(e.message.startsWith('AUTH:')?e.message.slice(5):e.message,e.message.startsWith('AUTH:')?403:503);}}
 export async function POST(req:NextRequest){try{
  const origin=req.headers.get('origin');if(origin&&origin!==req.nextUrl.origin)return fail('Origen inválido.',403);
@@ -60,6 +63,29 @@ export async function POST(req:NextRequest){try{
   for(const i of d.ingredients){const p=await item(i.productId,'product');if(!productAccess(user,p.data)||p.data.category==='Limpieza')throw new Error('El ingrediente no corresponde a tu rol o es un insumo de limpieza.');if(!p.data.unitConfirmed)throw new Error('Confirmá la unidad de '+p.data.name+' en Stock.');ingredients.push({...i,product:p.data.name,stockUnit:p.data.unit,stockQuantity:stockQuantity(i.quantity,i.unit,p.data.unit,i.packageSize)});}
   const payload={...d,ingredients};if(b.id){const r=await item(id.parse(b.id),'recipe');if(user.role==='cocina'&&r.data.type!=='plato')throw new Error('AUTH:No podés editar recetas de postres.');await update(r,payload);return NextResponse.json({ok:true});}return NextResponse.json(await insert('recipe',payload,user));
  }
+ if(action==='retryAlert'){
+  permits(user,['admin','caja']);await sendAlert(z.coerce.number().int().positive().parse(b.id));return NextResponse.json({ok:true});
+ }
+ if(action==='prepareRecipe'){
+  permits(user,['admin','caja','cocina']);
+  const d=z.object({recipeId:id,version:z.coerce.number().int().positive(),portions:count.refine(v=>v>0),key:z.string().uuid(),date,note:optional}).parse(b);
+  const r=await item(d.recipeId,'recipe');
+  if(user.role==='cocina'&&r.data.type!=='plato')throw new Error('AUTH:Las recetas de postres corresponden a caja y postres.');
+  const existing:any=await db().prepare('SELECT data FROM productions WHERE key=?').bind(d.key).first();
+  if(existing){const old=JSON.parse(existing.data);if(old.recipeId!==d.recipeId||old.portions!==d.portions||old.date!==d.date||old.note!==d.note)throw new Error('La confirmación ya corresponde a otra preparación.');return NextResponse.json({ok:true,repeated:true});}
+  if(r.version!==d.version)throw new Error('La receta cambió. Actualizá antes de preparar.');
+  const ingredients=consumption(r.data,d.portions).filter((i:any)=>i.quantity>0);
+  for(const i of ingredients){const p=await item(i.productId,'product');if(!productAccess(user,p.data)||!p.data.unitConfirmed||p.data.unit!==i.stockUnit)throw new Error('Revisá el acceso y la unidad de '+i.product+'.');}
+  const created=new Date().toISOString(),operation='recipe:'+d.key;
+  const payload={...d,recipe:r.data.name,type:r.data.type,ingredients,by:user.email};
+  try{await db().batch([
+   db().prepare('INSERT INTO productions(key,data,created) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM records WHERE id=? AND version=?) THEN ? ELSE NULL END,?').bind(d.key,r.id,r.version,JSON.stringify(payload),created),
+   ...ingredients.map((i:any)=>db().prepare('INSERT INTO records(kind,data,creator,created) VALUES(?,?,?,?)').bind('movement',JSON.stringify({productId:i.productId,product:i.product,quantity:-i.quantity,unit:i.stockUnit,date:d.date,reason:'Preparación de '+r.data.name,productionKey:d.key,automatic:true}),user.email,created)),
+   ...ingredients.map((i:any)=>alertStatement(i,operation,created))
+  ]);}catch(e:any){if(/UNIQUE|PRIMARY KEY|constraint/i.test(e.message))throw new Error('La preparación ya se registró o la receta cambió. Actualizá la pantalla.');throw e;}
+  await completeAlerts(operation).catch(()=>{});
+  return NextResponse.json({ok:true});
+ }
  if(action==='confirmUnit'){
   const r=await item(id.parse(b.id),'product');if(!productAccess(user,r.data))throw new Error('AUTH:El producto no corresponde a tu rol.');const unit=z.enum(['unidad','kg','litro','paquete','caja']).parse(b.unit);if(r.data.unitConfirmed&&r.data.unit!==unit)throw new Error('La unidad de stock ya está confirmada. Creá otro producto para cambiar la presentación sin alterar el historial.');await update(r,{...r.data,unit,unitConfirmed:true});return NextResponse.json({ok:true});
  }
@@ -76,7 +102,9 @@ export async function POST(req:NextRequest){try{
   await update(r,{...r.data,paid:r.data.paid+amount,payments:[...r.data.payments,{amount,date:date.parse(b.date),by:user.email}]});return NextResponse.json({ok:true});
  }
  if(action==='movement'){
-  const d=z.object({productId:id,quantity:z.coerce.number().finite().min(-1000000).max(1000000).refine(v=>v!==0),date,reason:text}).parse(b);const p=await item(d.productId,'product');if(!productAccess(user,p.data))throw new Error('AUTH:El producto no corresponde a tu rol.');if(!p.data.unitConfirmed)throw new Error('Confirmá primero la unidad del producto.');return NextResponse.json(await insert('movement',{...d,product:p.data.name,unit:p.data.unit},user));
+  const d=z.object({productId:id,quantity:z.coerce.number().finite().min(-1000000).max(1000000).refine(v=>v!==0),date,reason:text}).parse(b);const p=await item(d.productId,'product');if(!productAccess(user,p.data))throw new Error('AUTH:El producto no corresponde a tu rol.');if(!p.data.unitConfirmed)throw new Error('Confirmá primero la unidad del producto.');const created=new Date().toISOString(),operation='movement:'+crypto.randomUUID();
+  await db().batch([db().prepare('INSERT INTO records(kind,data,creator,created) VALUES(?,?,?,?)').bind('movement',JSON.stringify({...d,product:p.data.name,unit:p.data.unit}),user.email,created),...(d.quantity<0?[alertStatement({productId:p.id,product:p.data.name,quantity:-d.quantity,stockUnit:p.data.unit},operation,created)]:[])]);
+  await completeAlerts(operation).catch(()=>{});return NextResponse.json({ok:true});
  }
  if(action==='invoice'){
   permits(user,['admin','caja']);
@@ -119,8 +147,9 @@ export async function POST(req:NextRequest){try{
    const ingredients=[...(d.recipe?consumption(d.recipe,d.prepared):[]),...(d.dessertRecipe?consumption(d.dessertRecipe,d.preparedDesserts):[])].filter(i=>i.quantity>0);
    const created=new Date().toISOString();
    const payload={date:d.date,company:d.company,portions:d.prepared,desserts:d.preparedDesserts,ingredients,by:user.email,created,automatic:!!(d.recipe||d.dessertRecipe)};
-   try{await db().batch([db().prepare('INSERT INTO preparations(order_id,data) SELECT ?, CASE WHEN EXISTS(SELECT 1 FROM records WHERE id=? AND version=?) THEN ? ELSE NULL END').bind(r.id,r.id,r.version,JSON.stringify(payload)),db().prepare('UPDATE records SET data=?,version=version+1 WHERE id=? AND version=?').bind(JSON.stringify(d),r.id,r.version),...ingredients.map(i=>db().prepare('INSERT INTO records(kind,data,creator,created) VALUES(?,?,?,?)').bind('movement',JSON.stringify({productId:i.productId,product:i.product,quantity:-i.quantity,unit:i.stockUnit,date:d.date,reason:'Preparación pedido #'+r.id+' · '+i.recipe,orderId:r.id,automatic:true}),user.email,created))]);}
+   try{await db().batch([db().prepare('INSERT INTO preparations(order_id,data) SELECT ?, CASE WHEN EXISTS(SELECT 1 FROM records WHERE id=? AND version=?) THEN ? ELSE NULL END').bind(r.id,r.id,r.version,JSON.stringify(payload)),db().prepare('UPDATE records SET data=?,version=version+1 WHERE id=? AND version=?').bind(JSON.stringify(d),r.id,r.version),...ingredients.map(i=>db().prepare('INSERT INTO records(kind,data,creator,created) VALUES(?,?,?,?)').bind('movement',JSON.stringify({productId:i.productId,product:i.product,quantity:-i.quantity,unit:i.stockUnit,date:d.date,reason:'Preparación pedido #'+r.id+' · '+i.recipe,orderId:r.id,automatic:true}),user.email,created)),...Object.values(ingredients.reduce((acc:any,i:any)=>{if(acc[i.productId])acc[i.productId].quantity+=i.quantity;else acc[i.productId]={...i};return acc;},{})).map((i:any)=>alertStatement(i,'order:'+r.id,created))]);}
    catch(e:any){if(/UNIQUE|PRIMARY KEY|constraint/i.test(e.message))throw new Error('El pedido cambió o su preparación ya fue registrada. Actualizá la pantalla.');throw e;}
+   await completeAlerts('order:'+r.id).catch(()=>{});
    return NextResponse.json({ok:true});
   }
   await update(r,d);return NextResponse.json({ok:true});

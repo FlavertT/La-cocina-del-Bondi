@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+import ts from 'typescript';
+import assert from 'node:assert/strict';
+// Mock the Worker bindings and provider: never contact a real phone.
+const source=fs.readFileSync(new URL('../lib/stock-alerts.ts',import.meta.url),'utf8').replace("import {env} from 'cloudflare:workers';",'const env=globalThis.mockEnv;').replace("import {db} from './store';",'const db=()=>globalThis.mockDB;');
+const js=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText;
+globalThis.mockEnv={};let status='pending',calls=0,body;
+globalThis.mockDB={prepare(sql){return {bind(...args){return {async first(){if(!['pending','failed'].includes(status))return null;status='sending';return {data:JSON.stringify({product:'Arroz',unit:'kg',shortage:2,remaining:-2})};},async run(){if(sql.includes("status='accepted'"))status='accepted';if(sql.includes("status='failed'"))status='failed';if(sql.includes("status='unknown'"))status='unknown';}};}};}};
+globalThis.fetch=async(url,options)=>{calls++;body=options.body;assert.match(url,/^https:\/\/api\.twilio\.com\//);return {ok:true,json:async()=>({sid:'SMmock'})};};
+const {sendAlert}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
+await sendAlert(1);assert.equal(calls,0);assert.equal(status,'pending');
+Object.assign(mockEnv,{TWILIO_ACCOUNT_SID:'AC'+'a'.repeat(32),TWILIO_AUTH_TOKEN:'fake-test-token',WHATSAPP_FROM:'+5492215550000',WHATSAPP_TO:'+549221',WHATSAPP_CONTENT_SID:'HX'+'b'.repeat(32)});
+await sendAlert(1);assert.equal(calls,0);
+mockEnv.WHATSAPP_TO='+5492215550001';await sendAlert(1);assert.equal(status,'accepted');assert.equal(calls,1);
+assert.equal(body.get('To'),'whatsapp:+5492215550001');assert.deepEqual(JSON.parse(body.get('ContentVariables')),{'1':'Arroz','2':'2 kg','3':'-2 kg'});
+await sendAlert(1);assert.equal(calls,1);
+status='pending';globalThis.fetch=async()=>({ok:false,status:401});await sendAlert(2);assert.equal(status,'failed');
+status='pending';globalThis.fetch=async()=>{throw new Error('timeout')};await sendAlert(3);assert.equal(status,'unknown');
+await sendAlert(3);assert.equal(status,'unknown');
+console.log('OK: missing configuration, incomplete number, template variables, acceptance, rejection and uncertain timeout without resend. No real messages sent.');
