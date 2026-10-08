@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const code=fs.readFileSync(new URL('../docs/core.js',import.meta.url),'utf8');
+const {makeState,calculate,commit,validState}=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
+const data=JSON.parse(fs.readFileSync(new URL('../docs/data.json',import.meta.url),'utf8'));
+const mal=data.recipes.find(r=>r.key==='malfattis-15'),pan=data.recipes.find(r=>r.key==='salvado-bollitos');
+const original=makeState(data.products);assert.equal(original.stock.harina,null);assert.equal(original.stock.sal,19.5);assert.equal(original.stock.aceite,10.8);assert.equal(original.stock.salvado,4);
+assert.throws(()=>commit(original,mal,15,'missing',new Date().toISOString()),/Completá/);
+const initial=makeState(data.products,'example'),snapshot=JSON.stringify(initial);
+const preview=calculate(mal,30,initial.stock);assert.equal(preview.find(i=>i.key==='harina').used,2.2);assert.equal(preview.find(i=>i.key==='huevos').used,6);assert.equal(JSON.stringify(initial),snapshot);
+const after=commit(initial,mal,30,'one','2026-10-08T12:00:00Z');assert.equal(after.stock.harina,17.8);assert.equal(after.stock.huevos,54);assert.equal(after.history.length,1);assert.deepEqual(commit(after,mal,30,'one','2026-10-08T12:00:00Z'),after);
+const half=commit(after,pan,75,'two','2026-10-08T13:00:00Z');assert.equal(half.stock.harina,15.8);assert.equal(half.stock.aceite,4.95);assert.equal(half.history[0].ingredients.length,6);assert(!half.history[0].ingredients.some(i=>i.product==='Agua'));
+const winter=data.recipes.find(r=>r.key==='salvado-bollitos-invierno');assert.equal(calculate(winter,150,half.stock).find(i=>i.key==='levadura').used,.1);
+assert.throws(()=>commit(initial,mal,0,'bad','now'));assert.throws(()=>commit(initial,mal,1.5,'bad','now'));assert.throws(()=>commit(initial,mal,NaN,'bad','now'));
+const negative=commit(initial,pan,15000,'big','2026-10-08T14:00:00Z');assert(negative.stock.harina<0);assert(validState(negative,data.products));assert(validState(JSON.parse(JSON.stringify(half)),data.products));assert(!validState({version:1},data.products));
+const manifest=JSON.parse(fs.readFileSync(new URL('../docs/manifest.webmanifest',import.meta.url),'utf8'));assert.equal(manifest.start_url,'./');for(const icon of manifest.icons)assert(fs.existsSync(new URL('../docs/'+icon.src,import.meta.url)));
+console.log('OK: Excel references, missing units, preview without deduction, proportional recipes, idempotent confirmation, sequential stock, winter yeast, no water deduction, negatives, persistence and PWA asset paths.');

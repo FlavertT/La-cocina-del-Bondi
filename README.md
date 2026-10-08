@@ -2,6 +2,24 @@
 
 Sistema de gestión de compras, stock, viandas y entregas por empresa.
 
+## Demo instalable de recetas
+
+[Abrir la demo de GitHub Pages](https://flavertt.github.io/La-cocina-del-Bondi/)
+
+La carpeta `docs/` contiene una PWA estática de presentación con **Malfattis** y **Pan de salvado**. No requiere instalar dependencias ni ejecutar el backend de Workers. GitHub Pages publica `main /docs`.
+
+1. Elegir receta, variante y cantidad.
+2. Revisar el consumo, el disponible y el saldo proyectado.
+3. Si faltan datos, abrir **Revisar stock** y completarlos, o elegir **Usar stock de ejemplo** y guardar.
+4. Confirmar la preparación para descontar y registrar su detalle.
+5. Revisar **Depósito** e **Historial**, descargar la comparación CSV o reiniciar.
+
+La referencia inicial contiene solamente los ingredientes relevantes y las cantidades que pueden convertirse a partir de presentaciones explícitas del Excel. Harina sin peso de presentación, nuez moscada sin unidad y productos no presentes quedan sin cargar. Queso máquina no sustituye a queso para rallar. Los datos de ejemplo se identifican como ficticios. La demo no modifica ni sube el Excel original.
+
+Los cambios se guardan en `localStorage` de cada navegador: no hay base compartida, cuentas, sincronización ni envíos de WhatsApp. Se puede instalar desde el menú de un navegador compatible; en iPhone usar Compartir → Agregar a inicio. Tras una primera carga completa, el service worker conserva los archivos necesarios para abrirla sin conexión. Borrar los datos del navegador elimina su historial local.
+
+Prueba local: servir `docs/` con un servidor HTTP, por ejemplo `python -m http.server 4173 --directory docs`. Prueba de cálculos y recursos de PWA: `node tests/demo.mjs`.
+
 ## Funciones
 
 - Proveedores, compras, precios históricos, pagos parciales y saldos.
