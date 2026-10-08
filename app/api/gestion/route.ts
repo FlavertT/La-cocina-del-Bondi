@@ -56,11 +56,16 @@ export async function POST(req:NextRequest){try{
  }
  if(action==='recipe'){
   permits(user,['admin','caja','cocina']);
-  const d=z.object({name:text,type:z.enum(['plato','postre']),portions:count.refine(v=>v>0),note:optional,ingredients:z.array(z.object({productId:id,quantity:number,unit:z.enum(['kg','g','litro','ml','unidad','paquete','caja']),packageSize:z.coerce.number().finite().positive().optional()})).min(1).max(60)}).parse(b);
+  const ingredientFields={quantity:number,unit:z.enum(['kg','g','litro','ml','unidad','paquete','caja']),note:z.string().trim().max(300).default('')};
+  const d=z.object({name:text,type:z.enum(['plato','postre']),portions:count.refine(v=>v>0),note:optional,
+   category:z.string().trim().max(80).default(''),code:z.string().trim().max(40).default(''),yieldLabel:z.string().trim().max(80).default('porciones'),
+   portionWeight:z.coerce.number().finite().positive().max(100000).optional(),durationMinutes:z.coerce.number().int().positive().max(10080).optional(),
+   instructions:z.string().trim().max(15000).default(''),sourceLabel:z.string().trim().max(200).default(''),
+   ingredients:z.array(z.union([z.object({...ingredientFields,trackStock:z.literal(true).default(true),productId:id,packageSize:z.coerce.number().finite().positive().optional()}),z.object({...ingredientFields,trackStock:z.literal(false),product:text})])).min(1).max(60)}).parse(b);
   if(user.role==='cocina'&&d.type!=='plato')throw new Error('AUTH:Las recetas de postres corresponden a caja y postres.');
-  if(new Set(d.ingredients.map(i=>i.productId)).size!==d.ingredients.length)throw new Error('Cada producto debe aparecer una sola vez en la receta.');
+  const tracked=d.ingredients.filter(i=>i.trackStock!==false);if(!tracked.length)throw new Error('Vinculá al menos un ingrediente al depósito.');if(new Set(tracked.map(i=>i.productId)).size!==tracked.length)throw new Error('Cada producto debe aparecer una sola vez en la receta.');
   const ingredients=[];
-  for(const i of d.ingredients){const p=await item(i.productId,'product');if(!productAccess(user,p.data)||p.data.category==='Limpieza')throw new Error('El ingrediente no corresponde a tu rol o es un insumo de limpieza.');if(!p.data.unitConfirmed)throw new Error('Confirmá la unidad de '+p.data.name+' en Stock.');ingredients.push({...i,product:p.data.name,stockUnit:p.data.unit,stockQuantity:stockQuantity(i.quantity,i.unit,p.data.unit,i.packageSize)});}
+  for(const i of d.ingredients){if(i.trackStock===false){ingredients.push(i);continue;}const p=await item(i.productId,'product');if(!productAccess(user,p.data)||p.data.category==='Limpieza')throw new Error('El ingrediente no corresponde a tu rol o es un insumo de limpieza.');if(!p.data.unitConfirmed)throw new Error('Confirmá la unidad de '+p.data.name+' en Stock.');ingredients.push({...i,product:p.data.name,stockUnit:p.data.unit,stockQuantity:stockQuantity(i.quantity,i.unit,p.data.unit,i.packageSize)});}
   const payload={...d,ingredients};if(b.id){const r=await item(id.parse(b.id),'recipe');if(user.role==='cocina'&&r.data.type!=='plato')throw new Error('AUTH:No podés editar recetas de postres.');await update(r,payload);return NextResponse.json({ok:true});}return NextResponse.json(await insert('recipe',payload,user));
  }
  if(action==='retryAlert'){
@@ -77,7 +82,7 @@ export async function POST(req:NextRequest){try{
   const ingredients=consumption(r.data,d.portions).filter((i:any)=>i.quantity>0);
   for(const i of ingredients){const p=await item(i.productId,'product');if(!productAccess(user,p.data)||!p.data.unitConfirmed||p.data.unit!==i.stockUnit)throw new Error('Revisá el acceso y la unidad de '+i.product+'.');}
   const created=new Date().toISOString(),operation='recipe:'+d.key;
-  const payload={...d,recipe:r.data.name,type:r.data.type,ingredients,by:user.email};
+  const payload={...d,recipe:r.data.name,type:r.data.type,yieldLabel:r.data.yieldLabel||'porciones',portionWeight:r.data.portionWeight,recipeVersion:r.version,recipeSnapshot:r.data,ingredients,by:user.email};
   try{await db().batch([
    db().prepare('INSERT INTO productions(key,data,created) SELECT ?,CASE WHEN EXISTS(SELECT 1 FROM records WHERE id=? AND version=?) THEN ? ELSE NULL END,?').bind(d.key,r.id,r.version,JSON.stringify(payload),created),
    ...ingredients.map((i:any)=>db().prepare('INSERT INTO records(kind,data,creator,created) VALUES(?,?,?,?)').bind('movement',JSON.stringify({productId:i.productId,product:i.product,quantity:-i.quantity,unit:i.stockUnit,date:d.date,reason:'Preparación de '+r.data.name,productionKey:d.key,automatic:true}),user.email,created)),

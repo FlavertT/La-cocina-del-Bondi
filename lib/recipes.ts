@@ -5,4 +5,4 @@ export function stockQuantity(quantity:number,unit:string,stockUnit:string,packa
  if(['paquete','caja'].includes(stockUnit)&&['g','kg','ml','litro','unidad'].includes(unit)&&packageSize&&packageSize>0)return quantity/packageSize;
  throw new Error('La unidad del ingrediente no es compatible con el stock. Indicá el contenido por paquete o caja cuando corresponda.');
 }
-export function consumption(recipe:any,portions:number){return recipe.ingredients.map((i:any)=>({...i,quantity:Number((i.stockQuantity*portions/recipe.portions).toFixed(6)),recipe:recipe.name}));}
+export function consumption(recipe:any,portions:number){return recipe.ingredients.filter((i:any)=>i.trackStock!==false).map((i:any)=>({...i,quantity:Number((i.stockQuantity*portions/recipe.portions).toFixed(6)),recipe:recipe.name}));}

@@ -56,6 +56,18 @@ Si falta stock, una preparación real puede dejar un saldo negativo que debe rec
 
 ## Preparar porciones y alertas
 
+### Fichas basadas en los documentos de recetas
+
+En **Platos y recetas** hay pestañas **Mis recetas**, **Malfattis** y **Pan de salvado**. Las dos últimas contienen fichas de referencia con sus variantes. **Crear ficha con esta variante** abre un borrador: vincular cada ingrediente a su producto real del depósito antes de guardar. No se crean productos ni saldos automáticamente.
+
+El formulario tiene secciones **Ficha**, **Ingredientes** y **Elaboración**: categoría, número, rendimiento y unidad (porciones o piezas), peso individual, tiempo estimado, ingredientes con detalles, paso a paso y observaciones. Las recetas anteriores siguen funcionando.
+
+- Malfattis conserva las cantidades originales para 15, 20, 25 y 30 porciones, sin sustituirlas por una única regla proporcional. Algunas unidades de las variantes de 25 y 30 no están indicadas en el archivo: quedan pendientes de confirmar. El peso de espinaca está expresado blanqueado; ajustar cantidad o presentación si el stock registra espinaca cruda. Las variantes de 15 y 20 no indican peso por porción.
+- Pan de salvado permite elegir 40 calzonis de 180 g, 85 piadinas de 90 g o 150 bollitos de 50 g; y levadura habitual de 50 g o de invierno de 100 g. Agua total: 3 litros (1 de hidratación y 2 adicionales), sin descuento por defecto. No se inventan tiempo de horno, temperatura ni cantidades de ingredientes opcionales.
+- Un ingrediente sin control de stock, como agua de red, puede conservarse en la ficha desmarcando **Descontar del depósito**. No genera movimientos ni alertas, ni se incluye en el costo estimado. Debe quedar al menos un producto vinculado al depósito.
+
+Guardar o editar una ficha no consume stock. **Preparar → Confirmar preparación y descontar** registra el consumo proporcional de la ficha seleccionada. Para una producción vinculada a un pedido, confirmar solamente desde Pedidos para evitar registrar dos preparaciones diferentes. Los huevos y otras unidades pueden dar fracciones al escalar: revisar el rendimiento o ajustar la ficha cuando corresponda. El historial de preparación conserva una copia de la ficha utilizada.
+
 En **Platos y recetas → Preparar**, elegir las porciones. La vista muestra el consumo proporcional, el disponible y el saldo final por ingrediente. Confirmar registra el historial y descuenta todos los ingredientes en una transacción. Repetir la misma confirmación no duplica el consumo.
 
 Para una preparación vinculada a una empresa, usar **Pedidos → Preparar**. Registrar el mismo trabajo también desde Recetas sería una segunda preparación y descontaría nuevamente.
@@ -91,3 +103,11 @@ La autenticación espera las cabeceras verificadas de la plataforma Sites. No pu
 ## Verificación realizada
 
 Compilación y comprobación de tipos. Pruebas funcionales de compras, pagos, cobros a mes vencido, remitos, cantidades recibidas, conversión de ingredientes y confirmaciones simultáneas sin duplicar el consumo.
+
+Para probar las fichas nuevas sin tocar datos reales, con Node.js 22.13+ y dependencias instaladas:
+
+```sh
+node tests/recipe-format.mjs
+```
+
+La prueba ejecuta la ruta real contra SQLite en memoria, reemplazando los enlaces a Cloudflare y el envoltorio HTTP. Verifica cantidades de los documentos, metadatos, conversiones, creación sin consumo, preparación proporcional, confirmaciones repetidas, recetas anteriores, historial, faltantes y permisos. No sustituye una prueba de interfaz ni de despliegue en Workers.
